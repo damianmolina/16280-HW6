@@ -18,7 +18,7 @@ from control_msgs.msg import GripperCommand as GripperCommandMsg
 #           IMPORTANT DETAILS BELOW             #
 # ************************************************
 """
-This starter code provides code base to implement occupancy grid mapping for HWb Q3 group assignment
+
 
 --- TBD --- indicates the section to fill out   
 ... indicates the specific place to type the code
