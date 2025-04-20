@@ -148,27 +148,27 @@ def rrt_star(start, goal, bounds, obstacles, robot_radius, max_iter=1000, step_s
         if random.random() < goal_sample_rate:
             #TODO
             # sample goal node
-            rnd_node = ...
+            rnd_node = goal_node
         else:
             #TODO:
             # sample free node , you can use sample_free utility function
-            rnd_node = ...
+            rnd_node = sample_free(xmin, xmax, ymin, ymax)
 
 
         #TODO
         # get the neares node to the random node , you can use the get_nearest_node
-        nearest_node = ...
+        nearest_node = get_nearest_node(node_list, rnd_node)
 
         #TODO 
         #call the steer function to get a new_node , it generates a new node in the direction with a step_length limit
-        new_node = ...
+        new_node = steer(nearest_node, rnd_node, step_size)
 
         if not check_edge_collision(nearest_node, new_node, obstacles, robot_radius):
             continue
         
         #TODO:
         #get neear by nodes around the new_nodes with a radius of 0.5, you can use the get_near nodes function
-        near_nodes = ...
+        near_nodes = get_near_nodes(node_list, new_node, 0.5)
 
     
         new_node = choose_parent(new_node, near_nodes, obstacles, robot_radius)
@@ -180,7 +180,7 @@ def rrt_star(start, goal, bounds, obstacles, robot_radius, max_iter=1000, step_s
 
         #TODO 
         #rewire the node_list  , you can use the rewire function
-        rewire(...)
+        rewire(node_list, new_node, near_nodes, obstacles, robot_radius)
 
         if distance(new_node, goal_node) <= step_size and check_edge_collision(new_node, goal_node, obstacles, robot_radius):
             goal_node.parent = new_node
@@ -233,7 +233,7 @@ def dwa(x0, y0, theta0, v, goal, parms):
         for _ in range(parms.prediction_horizon):
             # use euler integration to get z0 , you can use the eluer_integration function
             #TODO
-            z0 = ...
+            z0 = euler_integration([0, parms.dt], z0, [v, omega], parms)
             traj.append(z0)
         traj = np.array(traj)
         trajectories.append(traj)
@@ -242,8 +242,9 @@ def dwa(x0, y0, theta0, v, goal, parms):
         for x, y, _ in traj:
 
             #update costs , use euclidian distances to the goal
-
-            cost_all[i] += ...
+            current_node = Node(x, y)
+            goal_node = Node(goal[0], goal[1])
+            cost_all[i] += distance(current_node, goal_node)
             if not (parms.bounds[0] <= x <= parms.bounds[1] and parms.bounds[2] <= y <= parms.bounds[3]):
                 cost_all[i] += 1e6
                 valid = False
