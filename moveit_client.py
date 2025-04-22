@@ -85,6 +85,7 @@ class SequentialPosePlanner(Node):
             # this picks the cube from position 1 table 1 to position 1 table 2 cw rotation
             self.add_pick_place_sequence((0.08, 0.0), (0.0, -0.08), -1)
             # --------- add more here ---------------------------
+            
         # ------------------------- TBD -END ---------------------------------
 
             self.plan_to_position_goal_sequential()
@@ -113,8 +114,8 @@ class SequentialPosePlanner(Node):
         # the 'dir' parameter is useful to invert the sign of the rotation that might be required for table 2 to table 1
         # movement
 
-        pick_orientation = (..., ...,  ...)   # notice the orientation of the robot, table1 and movable axes of the robot
-        place_orientation = (..., ..., sign * ...) # notice the orientation of the robot, table2 and movable axes of the robot
+        pick_orientation = (px, py, dir)   # notice the orientation of the robot, table1 and movable axes of the robot
+        place_orientation = (qx, qy, sign * dir) # notice the orientation of the robot, table2 and movable axes of the robot
 
         self.states_and_poses.extend([
             ("PICK_PRE_GRASP", self.get_pose_stamped(px, py, 0.075, *pick_orientation)),
@@ -286,7 +287,7 @@ class SequentialPosePlanner(Node):
         #  This is stored in a SRDF file undet he package: open_manipulator_x_moveit_config/config
         # Populate the joint_values array below using the values from the SRDF file
 
-        joint_values = [..., ..., ..., ...]
+        joint_values = [0, -1, 0.7, 0.3]
 
         # --------------------- TBD - END --------------------
 
